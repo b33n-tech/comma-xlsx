@@ -1,19 +1,22 @@
 import streamlit as st
 
-st.title("Formatteur d'IDs pour Airtable")
+st.title("Formatteur d'IDs (un par ligne) → Airtable")
 
-# Zone de texte où tu colles ta liste d'IDs
-ids_input = st.text_area("Collez ici votre liste d'identifiants", height=200)
+ids_input = st.text_area(
+    "Collez ici vos identifiants (un par ligne)",
+    height=200,
+    placeholder="ID1\nID2\nID3\n..."
+)
 
-if st.button("Formater"):
-    # On découpe sur les espaces, nouvelles lignes, tabulations...
-    ids_list = ids_input.replace(",", " ").split()
-    # On filtre pour retirer les éventuels vides
+# Reformater en temps réel
+if ids_input.strip():
+    # On sépare par lignes
+    ids_list = ids_input.strip().split("\n")
+    # On retire les espaces inutiles
     ids_list = [id_.strip() for id_ in ids_list if id_.strip()]
-    # On join avec ", " comme séparateur
+    # On met dans le format voulu
     formatted_ids = ", ".join(ids_list)
     
     st.text_area("Résultat formaté", formatted_ids, height=200)
-    
-    st.success("IDs formatés avec succès !")
-
+else:
+    st.info("Collez vos IDs ci-dessus pour voir le résultat.")
